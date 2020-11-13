@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './components/product_lists.dart';
 
 void main() => runApp(MyApp());
 
@@ -23,6 +24,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final List<Cart> _carts = [
+      //SEBAGAI PERMULAAN, KITA TAMBAHKAN DUA BUAH DATA DUMMY
+      Cart(id: 'DW1', title: 'Sabun Mandi', harga: 15000, qty: 1),
+      Cart(id: 'DW2', title: 'Shampoo', harga: 17000, qty: 2),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +40,7 @@ class _HomeState extends State<Home> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            //NANTINYA BERISI WIDGET
+            ProductList(_carts), //NANTINYA BERISI WIDGET
           ],
         ),
       ),
