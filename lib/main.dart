@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './components/product_lists.dart';
+import './components/dashboard.dart';
 
 void main() => runApp(MyApp());
 
@@ -40,6 +41,7 @@ class _HomeState extends State<Home> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            Dashboard(_carts),
             ProductList(_carts), //NANTINYA BERISI WIDGET
           ],
         ),
