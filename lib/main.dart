@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import './components/product_lists.dart';
 import './components/dashboard.dart';
+import './components/product_lists.dart';
 import './components/add_new_item.dart';
+import './models/cart.dart';
 
 void main() => runApp(MyApp());
 
@@ -27,34 +28,30 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final List<Cart> _carts = [
-      //SEBAGAI PERMULAAN, KITA TAMBAHKAN DUA BUAH DATA DUMMY
-      Cart(id: 'DW1', title: 'Sabun Mandi', harga: 15000, qty: 1),
-      Cart(id: 'DW2', title: 'Shampoo', harga: 17000, qty: 2),
-    ];
+    Cart(id: 'DW1', title: 'Sabun Mandi', harga: 15000, qty: 1),
+    Cart(id: 'DW2', title: 'Shampoo', harga: 17000, qty: 2),
+  ];
 
-    void _openModal(BuildContext context) {
+  void _openModal(BuildContext context) {
     showModalBottomSheet(
         context: context,
         builder: (_) {
-          return AddNewItem(_addNewItem); //DAN ISI DARI MODAL TERSEBUT ADALAH COMPONENT AddNewItem. PASTINYA PARAMETER YANG DIKIRIM ADALAH SEBUAH FUNGSI BERNAMA _addNewItem, MAKA PERLU KITA DEFINISIKAN SELANJUTNYA
+          return AddNewItem(_addNewItem);
         });
   }
 
-  //FUNGSI INI UNTUK MEMANIPULASI DENGAN MENAMBAHKAN DATA BARU KE DALAM CART
   void _addNewItem(String title, double harga, int qty) {
-    //BUAT FORMAT DATANYA DENGAN REFERENSI MENGGUNAKAN MODAL Cart
-    final newItem = Cart(id: DateTime.now().toString(), title: title, harga: harga, qty: qty);
+    final newItem = Cart(
+        id: DateTime.now().toString(), title: title, harga: harga, qty: qty);
     setState(() {
-      _carts.add(newItem); //SET STATE-NYA UNTUK MENAMBAHKAN DATA BARU TERSEBUT
+      _carts.add(newItem);
     });
   }
-  
-  //FUNGSI INI UNTUK MENGHAPUS SEMUA DATA PADA VARIABLE CARTS
+
   void _resetCarts() {
     setState(() {
-      _carts.clear(); //SET STATENYA KEMUDIAN CLEAR
+      _carts.clear();
     });
-  }
   }
 
   @override
@@ -62,14 +59,27 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Daftar Belanjaan"),
+        actions: <Widget>[
+          FlatButton(
+            child: Icon(
+              Icons.clear,
+              color: Colors.white,
+            ),
+            onPressed: () => _resetCarts(),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             Dashboard(_carts),
-            ProductList(_carts), //NANTINYA BERISI WIDGET
+            ProductList(_carts),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => _openModal(context),
       ),
     );
   }
